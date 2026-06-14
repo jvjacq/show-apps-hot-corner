@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.show-apps-hot-corner"
+          path="/org/gnome/shell/extensions/show-apps-hot-corner/">
+    <key name="corner" type="s">
+      <default>'bottom-left'</default>
+      <summary>Hot corner position</summary>
+      <description>Which corner triggers the app grid: top-left, top-right, bottom-left, bottom-right</description>
+    </key>
+  </schema>
+</schemalist>

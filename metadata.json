@@ -1,0 +1,8 @@
+{
+  "name": "Show Apps Hot Corner",
+  "description": "Trigger the app grid by moving your mouse to a configurable screen corner.",
+  "uuid": "show-apps-hot-corner@jacq",
+  "version": 1,
+  "settings-schema": "org.gnome.shell.extensions.show-apps-hot-corner",
+  "shell-version": ["45", "46", "47", "48", "49", "50"]
+}
