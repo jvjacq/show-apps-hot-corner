@@ -17,9 +17,9 @@ Search for "Show Apps Hot Corner" in [Extension Manager](https://flathub.org/app
 ### Manual
 
 ```bash
-git clone https://github.com/jvjacq/show-apps-hot-corner ~/.local/share/gnome-shell/extensions/show-apps-hot-corner@jacq
-glib-compile-schemas ~/.local/share/gnome-shell/extensions/show-apps-hot-corner@jacq/schemas/
-gnome-extensions enable show-apps-hot-corner@jacq
+git clone https://github.com/jvjacq/show-apps-hot-corner ~/.local/share/gnome-shell/extensions/show-apps-hot-corner@jvjacq.com
+glib-compile-schemas ~/.local/share/gnome-shell/extensions/show-apps-hot-corner@jvjacq.com/schemas/
+gnome-extensions enable show-apps-hot-corner@jvjacq.com
 ```
 
 ## Supported GNOME versions

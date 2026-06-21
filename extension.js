@@ -15,21 +15,26 @@ export default class ShowAppsHotCorner extends Extension {
 
         Main.layoutManager.addChrome(this._corner);
 
-        this._enterId = this._corner.connect('enter-event', () => {
-            Main.overview.showApps();
-        });
+        this._corner.connectObject(
+            'enter-event', () => this._trigger(),
+            this
+        );
+
+        Main.layoutManager.connectObject(
+            'monitors-changed', () => this._updatePosition(),
+            this
+        );
+
+        this._settings.connectObject(
+            'changed::corner', () => this._updatePosition(),
+            this
+        );
 
         this._updatePosition();
+    }
 
-        this._monitorChangedId = Main.layoutManager.connect(
-            'monitors-changed',
-            () => this._updatePosition()
-        );
-
-        this._settingsChangedId = this._settings.connect(
-            'changed::corner',
-            () => this._updatePosition()
-        );
+    _trigger() {
+        Main.overview.showApps();
     }
 
     _updatePosition() {
@@ -47,23 +52,16 @@ export default class ShowAppsHotCorner extends Extension {
     }
 
     disable() {
-        if (this._settingsChangedId) {
-            this._settings.disconnect(this._settingsChangedId);
-            this._settingsChangedId = null;
-        }
-        if (this._enterId) {
-            this._corner.disconnect(this._enterId);
-            this._enterId = null;
-        }
-        if (this._monitorChangedId) {
-            Main.layoutManager.disconnect(this._monitorChangedId);
-            this._monitorChangedId = null;
-        }
+        this._settings?.disconnectObject(this);
+        Main.layoutManager.disconnectObject(this);
+
         if (this._corner) {
+            this._corner.disconnectObject(this);
             Main.layoutManager.removeChrome(this._corner);
             this._corner.destroy();
             this._corner = null;
         }
+
         this._settings = null;
     }
 }
