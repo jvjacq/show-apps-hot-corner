@@ -34,7 +34,10 @@ export default class ShowAppsHotCorner extends Extension {
     }
 
     _trigger() {
-        Main.overview.showApps();
+        if (Main.overview.visible)
+            Main.overview.hide();
+        else
+            Main.overview.showApps();
     }
 
     _updatePosition() {
