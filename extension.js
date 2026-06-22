@@ -1,4 +1,5 @@
 import St from 'gi://St';
+import GLib from 'gi://GLib';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 
@@ -12,8 +13,6 @@ export default class ShowAppsHotCorner extends Extension {
             width: 1,
             height: 1,
         });
-
-        Main.layoutManager.addChrome(this._corner);
 
         this._corner.connectObject(
             'enter-event', () => this._trigger(),
@@ -30,14 +29,14 @@ export default class ShowAppsHotCorner extends Extension {
             this
         );
 
-        if (Main.layoutManager._startingUp) {
-            Main.layoutManager.connectObject(
-                'startup-complete', () => this._updatePosition(),
-                this
-            );
-        } else {
+        // Defer addChrome to the next main loop iteration so our button is added
+        // after all other extensions, giving it the highest z-order in the chrome layer.
+        this._initId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+            Main.layoutManager.addChrome(this._corner);
             this._updatePosition();
-        }
+            this._initId = null;
+            return GLib.SOURCE_REMOVE;
+        });
     }
 
     _trigger() {
@@ -62,6 +61,11 @@ export default class ShowAppsHotCorner extends Extension {
     }
 
     disable() {
+        if (this._initId) {
+            GLib.source_remove(this._initId);
+            this._initId = null;
+        }
+
         this._settings?.disconnectObject(this);
         Main.layoutManager.disconnectObject(this);
 
